@@ -32,6 +32,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -44,8 +46,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import ru.gorbulevsv.kotlinallmaterialcomponents.components.MyDropDownBox
 
 class MainActivity : ComponentActivity() {
+    var items = listOf(
+        "Москва",
+        "Калуга",
+        "Санкт-Петербург",
+        "Новосибирск",
+        "Геленджик"
+    )
+    var selectedItem = mutableStateOf(items[0])
+    var items2 = listOf(
+        "Красный",
+        "Синий",
+        "Зелёный",
+        "Голубой",
+        "Оранжевый"
+    )
+    var selectedItem2 = mutableStateOf(items2[0])
+
     @SuppressLint("UnrememberedMutableInteractionSource")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,94 +74,14 @@ class MainActivity : ComponentActivity() {
             KotlinAllMaterialComponentsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(modifier = Modifier.padding(innerPadding)) {
-                        Column(modifier = Modifier.padding(10.dp)) {
+                        Column(
+                            modifier = Modifier.padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
 
 
-                            var isDialogShow by remember { mutableStateOf(false) }
-                            var items = listOf(
-                                "Москва",
-                                "Калуга",
-                                "Санкт-Петербург",
-                                "Новосибирск",
-                                "Геленджик"
-                            )
-                            var selectedItem by remember { mutableStateOf(items[0]) }
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        MaterialTheme.colorScheme.primary.copy(.05f),
-                                        shape = RoundedCornerShape(5.dp)
-                                    )
-                                    .fillMaxWidth()
-                                    .clickable(onClick = { isDialogShow = true })
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(12.dp, 10.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(text = selectedItem)
-                                    Icon(
-                                        imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = ""
-                                    )
-                                }
-
-                                if (isDialogShow) {
-                                    AlertDialog(
-                                        title = {
-                                            Text(
-                                                text = "Выбери город",
-                                                fontSize = 18.sp,
-                                                fontWeight = FontWeight.Bold
-                                            )
-                                        },
-                                        text = {
-                                            Column {
-                                                for (i in items) {
-                                                    Box(
-                                                        modifier = Modifier
-                                                            .background(
-                                                                if (i == selectedItem) {
-                                                                    MaterialTheme.colorScheme.secondary.copy(
-                                                                        .1f
-                                                                    )
-                                                                } else {
-                                                                    Color.Transparent
-                                                                }
-                                                            )
-                                                            .fillMaxWidth()
-                                                            .clickable(onClick = {
-                                                                selectedItem = i
-                                                                isDialogShow = false
-                                                            })
-                                                    ) {
-                                                        Row(
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                                .padding(12.dp, 10.dp),
-                                                            horizontalArrangement = Arrangement.SpaceBetween
-                                                        ) {
-                                                            Text(text = i, fontSize = 16.sp)
-                                                        }
-                                                    }
-
-                                                }
-                                            }
-                                        },
-                                        onDismissRequest = {
-                                            isDialogShow = false
-                                        },
-                                        confirmButton = {},
-                                        dismissButton = {},
-                                        shape = RoundedCornerShape(10.dp)
-                                    )
-                                }
-                            }
-
-
+                            MyDropDownBox(items, selectedItem)
+                            MyDropDownBox(items2, selectedItem2)
                         }
                     }
                 }
